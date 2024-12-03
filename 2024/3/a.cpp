@@ -14,6 +14,7 @@ typedef pair<long,long> pll;
 #define vi vector<int>
 #define vb vector<bool>
 #define vll vector<long long>
+#define vs vector<string>
 #define mii map<int, int>
 #define si set<int>
 #define sc set<char>
@@ -54,27 +55,41 @@ void setIO(string s) {
     freopen((s + ".out").c_str(), "w", stdout);
 }
 
-bool check(const vi &a) {
-    if (a.size() < 2) return true;
-    bool g = (a[0] < a[1]);
-    f(i, 1, a.size()) {
-        if ((a[i] > a[i-1] && !g) || (a[i] < a[i-1] && g) ||
-            (abs(a[i] - a[i-1]) < 1 || abs(a[i] - a[i-1]) > 3)) {
-            return false;
-        }
+ll parse(string s) {
+    ll n1 = 0, n2 = 0, i = 4;
+    while (s[i] != ',') {
+        n1 = n1 * 10 + (s[i] - '0');
+        i++;
     }
-    return true;
+    i++;
+    while (s[i] != ')') {
+        n2 = n2 * 10 + (s[i] - '0');
+        i++;
+    }
+    return n1 * n2;
+}
+
+vs search(regex r, string s) {
+    vs m;
+    auto beg = sregex_iterator(s.begin(), s.end(), r);
+    auto end = sregex_iterator();
+    for (sregex_iterator i = beg; i != end; i++) {
+        smatch sm = *i;
+        m.pb(sm.str());
+    }
+    return m;
 }
 
 void solve() {
     // setIO("");
-    string r;
-    int sm = 0;
-    while (getline(cin, r)) {
-        vi a; int n;
-        istringstream stream(r);
-        while (stream >> n) a.pb(n);
-        sm += check(a);
+    string s;
+    ll sm = 0;
+    regex r("mul\\((\\d+),(\\d+)\\)"); 
+    while (getline(cin, s)) {
+        vs m = search(r, s);
+        for (auto x : m) {
+            sm += parse(x);
+        }
     }
     cout << sm << "\n";
 }
