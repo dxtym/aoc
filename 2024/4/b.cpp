@@ -63,16 +63,16 @@ void solve() {
         s.push_back(t);
     }
     ll sm = 0;
-    vector<pair<int, int>> dirs = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}, {0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-    f(i, 0, s.size()) {
-        f(j, 0, s[i].size()) {
-            if (s[i][j] == 'X') {
+    vector<pair<int, int>> dirs = {{-1, -1}, {-1, 1}, {1, 1}, {1, -1}};
+    f(i, 1, s.size()) {
+        f(j, 1, s[i].size()) {
+            if (s[i][j] == 'A') {
+                string c;
                 for (const auto& d: dirs) {
                     int dx = d.first; int dy = d.second;
-                    if (0 <= i+3*dx && i+3*dx < s.size() && 0 <= j+3*dy && j+3*dy < s[i].size()) {
-                        if (s[i+dx][j+dy] == 'M' && s[i+2*dx][j+2*dy] == 'A' && s[i+3*dx][j+3*dy] == 'S') sm++;
-                    }
+                    if (0 <= i+dx && i+dx < s.size() && 0 <= j+dy && j+dy < s[i].size()) c += s[i+dx][j+dy];
                 }
+                sm += (c == "MSSM" || c == "SMMS" || c == "SSMM" || c == "MMSS");
             }
         }
     }
